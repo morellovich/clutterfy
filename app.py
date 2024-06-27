@@ -72,3 +72,35 @@ def organizeDir():
         filePath.rename(directoryPath.joinpath(filePath))
 
 organizeDir()
+
+def edit_categories():
+    print("Current file categories:")
+    for category, extensions in SUBDIR.items():
+        print(f"{category}: {', '.join(extensions)}")
+    
+    print("\nDo you want to edit categories? (yes/no)")
+    choice = input().strip().lower()
+    
+    if choice == 'yes':
+        print("Enter the category name to edit or 'new' to add a new category:")
+        category = input().strip()
+        
+        if category == 'new':
+            print("Enter the new category name:")
+            new_category = input().strip()
+            print(f"Enter the extensions for {new_category} (comma separated):")
+            extensions = input().strip().split(',')
+            SUBDIR[new_category] = [ext.strip() for ext in extensions]
+        elif category in SUBDIR:
+            print(f"Enter the new extensions for {category} (comma separated):")
+            extensions = input().strip().split(',')
+            SUBDIR[category] = [ext.strip() for ext in extensions]
+        else:
+            print("Category not found.")
+        
+        save_categories(SUBDIR)
+        print("Categories updated.")
+    else:
+        print("No changes made.")
+
+edit_categories()
