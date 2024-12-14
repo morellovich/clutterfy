@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 from datetime import datetime
 import time
-
+import tkinter as tk
+from tkinter import messagebox
 
 
 # define the file categories with dictionary
@@ -30,8 +31,11 @@ SUBDIR = {
     "Apps": [
         ".exe", ".msi", ".apk", ".bat", ".com", ".cmd", ".gadget", ".jar", 
         ".wsf", ".cpl", ".msc", ".msu", ".msp", ".iso", ".dmg", ".deb", 
-        ".rpm", ".bin", ".run", ".sh"]
+        ".rpm", ".bin", ".run", ".sh", ".app", ".dmg"]
         }
+
+
+
 
 
 
@@ -52,19 +56,19 @@ def organizeDir():
     look at every extension of files and move that file to the exact category from calling the pickDir function.
     '''
     for item in os.scandir():
-                
+
         #just looking for file, skip the directory
         if item.is_dir():
                 continue
-                
+
         filePath = Path(item)
         fileType = filePath.suffix.lower()
         directory = pickDir(fileType)
-        
+
         #just skip, if the file extension not defined.
         if directory == None:
             continue
-        
+
         directoryPath = Path(directory)
         #make new directory if the category's directory not found.
         if directoryPath.is_dir() != True:
@@ -72,35 +76,3 @@ def organizeDir():
         filePath.rename(directoryPath.joinpath(filePath))
 
 organizeDir()
-
-def edit_categories():
-    print("Current file categories:")
-    for category, extensions in SUBDIR.items():
-        print(f"{category}: {', '.join(extensions)}")
-    
-    print("\nDo you want to edit categories? (yes/no)")
-    choice = input().strip().lower()
-    
-    if choice == 'yes':
-        print("Enter the category name to edit or 'new' to add a new category:")
-        category = input().strip()
-        
-        if category == 'new':
-            print("Enter the new category name:")
-            new_category = input().strip()
-            print(f"Enter the extensions for {new_category} (comma separated):")
-            extensions = input().strip().split(',')
-            SUBDIR[new_category] = [ext.strip() for ext in extensions]
-        elif category in SUBDIR:
-            print(f"Enter the new extensions for {category} (comma separated):")
-            extensions = input().strip().split(',')
-            SUBDIR[category] = [ext.strip() for ext in extensions]
-        else:
-            print("Category not found.")
-        
-        save_categories(SUBDIR)
-        print("Categories updated.")
-    else:
-        print("No changes made.")
-
-edit_categories()
