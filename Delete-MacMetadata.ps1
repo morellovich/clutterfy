@@ -1,5 +1,5 @@
 # Define the target directory
-$TargetDirectory = " D:\Files" # Replace with your directory path
+$TargetDirectory = "D:\Files" # Replace with your directory path
 
 # Check if the directory exists
 if (-Not (Test-Path -Path $TargetDirectory)) {
@@ -8,7 +8,7 @@ if (-Not (Test-Path -Path $TargetDirectory)) {
 }
 
 # Find and delete ._ files
-Get-ChildItem -Path $TargetDirectory -Recurse -File -Include "._*", ".DS_Store" |
+Get-ChildItem -Path $TargetDirectory -Recurse -File -Include "._*", ".DS_Store" -Force |
     ForEach-Object {
         try {
             # Delete the file
